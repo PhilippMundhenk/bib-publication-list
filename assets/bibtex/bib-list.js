@@ -877,7 +877,7 @@ function BibTex(options)
 		'techreport',
 		'unpublished'
 	);
-	this.authorstring = 'VON LAST, JR, FIRST';
+	this.authorstring = 'FIRST';
     
 }
 
@@ -2466,6 +2466,7 @@ var bibtexify = (function($) {
             .replace(/\\'A/g, '&Aacute;')
             .replace(/\\"o/g, '&ouml;')
             .replace(/\\ss\{\}/g, '&szlig;')
+            .replace(/ß/g, '&szlig;')
             .replace(/\{/g, '')
             .replace(/\}/g, '')
             .replace(/\\&/g, '&')

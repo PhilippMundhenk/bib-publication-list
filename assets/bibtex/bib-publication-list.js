@@ -7,13 +7,14 @@ var bibtexify = (function($) {
             .replace(/\{\\aa\}/g, '&aring;')
             .replace(/\\aa\{\}/g, '&aring;')
             .replace(/\\"a/g, '&auml;')
-            .replace(/\\"\{o\}/g, '&ouml;')
+            .replace(/\\"o/g, '&ouml;')
             .replace(/\\'e/g, '&eacute;')
             .replace(/\\'\{e\}/g, '&eacute;')
             .replace(/\\'a/g, '&aacute;')
             .replace(/\\'A/g, '&Aacute;')
             .replace(/\\"o/g, '&ouml;')
-            .replace(/\\ss\{\}/g, '&szlig;')
+            .replace(/\\"u/g, '&uuml;')
+            .replace(/\\ss/g, '&szlig;')
             .replace(/\{/g, '')
             .replace(/\}/g, '')
             .replace(/\\&/g, '&')
@@ -26,13 +27,14 @@ var bibtexify = (function($) {
             .replace(/\{\\aa\}/g, '%C3%A5')
             .replace(/\\aa\{\}/g, '%C3%A5')
             .replace(/\\"a/g, '%C3%A4')
-            .replace(/\\"\{o\}/g, '%C3%B6')
+            .replace(/\\"o/g, '%C3%B6')
             .replace(/\\'e/g, '%C3%A9')
             .replace(/\\'\{e\}/g, '%C3%A9')
             .replace(/\\'a/g, '%C3%A1')
             .replace(/\\'A/g, '%C3%81')
             .replace(/\\"o/g, '%C3%B6')
-            .replace(/\\ss\{\}/g, '%C3%9F')
+            .replace(/\\"u/g, '%C3%BC')
+            .replace(/\\ss/g, '%C3%9F')
             .replace(/\{/g, '')
             .replace(/\}/g, '')
             .replace(/\\&/g, '%26')
@@ -58,6 +60,11 @@ var bibtexify = (function($) {
             return itemStr.replace(/undefined/g,
                                    '<span class="undefined">missing<\/span>');
         },
+		type2html: function(entryData, counter){
+		return '';
+		//	return '<div>'+
+		//				'<span class="pubi ' + entryData.entryType + '"></span><br/><span>'+bib2html.labelsshort[entryData.entryType]+(counter)+'</span></div>';
+		},
         // converts the given author data into HTML
         authors2html: function(authorData) {
             var authorsStr = '';
@@ -71,8 +78,8 @@ var bibtexify = (function($) {
         links: function(entryData) {
             var itemStr = '';
             if (entryData.url && entryData.url.match(/.*\.pdf/)) {
-                itemStr += ' (<a title="PDF-version of this article" href="' +
-                            entryData.url + '">pdf<\/a>)';
+                itemStr += ' <a title="PDF-version of this article" href="' +
+                            entryData.url + '"><img src=\"assets/bibtex/lib/images/pdf.png\" /><\/a> ';
             } else if (entryData.url) {
                 itemStr += ' (<a title="This article online" href="' + entryData.url +
                             '">link<\/a>)';
@@ -82,8 +89,8 @@ var bibtexify = (function($) {
         // adds the bibtex link and the opening div with bibtex content
         bibtex: function(entryData) {
             var itemStr = '';
-            itemStr += ' (<a title="This article as BibTeX" href="#" class="biblink">' +
-                        'bib</a>)<div class="bibinfo hidden">';
+            itemStr += ' <a title="This article as BibTeX" href="#" class="biblink">' +
+                        '<img src=\"assets/bibtex/lib/images/bibtex.png\" /></a><div class="bibinfo hidden">';
             itemStr += '<a href="#" class="bibclose" title="Close">x</a><pre>';
             itemStr += '@' + entryData.entryType + "{" + entryData.cite + ",\n";
             $.each(entryData, function(key, value) {
@@ -126,17 +133,20 @@ var bibtexify = (function($) {
         },
         // helper functions for formatting different types of bibtex entries
         inproceedings: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-                entryData.title + ". In <em>" + entryData.booktitle +
-                ", pp. " + entryData.pages +
-                ((entryData.address)?", " + entryData.address:"") + ".<\/em>";
+            return this.authors2html(entryData.author) + ". " +
+                "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". In: <em>" + entryData.booktitle + ".<\/em>" +
+				" " + entryData.location + 
+				((entryData.pages)? ", pp. " + entryData.pages :"") + "." +
+				((entryData.doi)? " DOI: <a href=\"http://dx.doi.org/"+entryData.doi+"\" target=\"_blank\">"+entryData.doi+"</a>":"") +
+				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
         },
         article: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-                entryData.title + ". <em>" + entryData.journal + ", " + entryData.volume +
+            return this.authors2html(entryData.author) + ". " +
+                "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". <em> In: " + entryData.journal + ", " + entryData.volume +
                 ((entryData.number)?"(" + entryData.number + ")":"")+ ", " +
                 "pp. " + entryData.pages + ". " +
-                ((entryData.address)?entryData.address + ".":"") + "<\/em>";
+                ((entryData.doi)? " DOI: <a href=\"http://dx.doi.org/"+entryData.doi+"\" target=\"_blank\">"+entryData.doi+"</a>":"") +
+				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
         },
         misc: function(entryData) {
             return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
@@ -155,10 +165,10 @@ var bibtexify = (function($) {
                 entryData.number + ". " + entryData.type + ".";
         },
         book: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-                " <em>" + entryData.title + "<\/em>, " +
-                entryData.publisher + ", " + entryData.year +
-                ((entryData.issn)?", ISBN: " + entryData.issn + ".":".");
+            return this.authors2html(entryData.author) + ". " +
+                " <em class=\"entrytitle\">" + entryData.title + "<\/em>, " +
+                entryData.address +": "+ entryData.publisher + ". " +
+                ((entryData.isbn)?", ISBN: " + entryData.isbn + ".":".");
         },
         inbook: function(entryData) {
             return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
@@ -170,6 +180,16 @@ var bibtexify = (function($) {
                 ((entryData.issn)?", ISBN: " + entryData.issn + "":"") +
                 ".";
         },
+        incollection: function(entryData) {
+            return this.authors2html(entryData.author) + ". " +
+                "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\""+ ". In: <em>" + entryData.booktitle + "<\/em>. " +
+                ((entryData.editor)?" Ed. by " + entryData.editor + ". ":"") +
+                entryData.publisher + ", pp. " + entryData.pages + "" +
+                ((entryData.series)?", <em>" + entryData.series + "<\/em>":"") +
+                ((entryData.volume)?", Vol. " + entryData.volume + "":"") +
+                ((entryData.doi)? " DOI: <a href=\"http://dx.doi.org/"+entryData.doi+"\" target=\"_blank\">"+entryData.doi+"</a>":"") +
+				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
+        },
         // weights of the different types of entries; used when sorting
         importance: {
             'TITLE': 9999,
@@ -178,10 +198,10 @@ var bibtexify = (function($) {
             'techreport': 20,
             'mastersthesis': 30,
             'inproceedings': 40,
-            'incollection': 50,
+            'incollection': 105,
             'proceedings': 60,
             'conference': 70,
-            'article': 80,
+            'article': 108,
             'phdthesis': 90,
             'inbook': 100,
             'book': 110,
@@ -193,7 +213,7 @@ var bibtexify = (function($) {
             'book': 'Book',
             'conference': 'Conference',
             'inbook': 'Book chapter',
-            'incollection': '',
+            'incollection': 'Book chapter',
             'inproceedings': 'Conference',
             'manual': 'Manual',
             'mastersthesis': 'Thesis',
@@ -201,8 +221,22 @@ var bibtexify = (function($) {
             'phdthesis': 'PhD Thesis',
             'proceedings': 'Conference proceeding',
             'techreport': 'Technical report',
-            'unpublished': 'Unpublished'}
-    };
+            'unpublished': 'Unpublished'},
+		labelsshort: {
+            'article': 'j',
+            'book': 'b',
+            'conference': 'c',
+            'inbook': 'h',
+            'incollection': 'h',
+            'inproceedings': 'c',
+            'manual': 'm',
+            'mastersthesis': 't',
+            'misc': 's',
+            'phdthesis': 'p',
+            'proceedings': 'cp',
+            'techreport': 'i',
+            'unpublished': 'u'}
+		};
     // format a phd thesis similarly to masters thesis
     bib2html.phdthesis = bib2html.mastersthesis;
     // conference is the same as inproceedings
@@ -236,15 +270,30 @@ var bibtexify = (function($) {
         var bibentries = [], len = bibtex.data.length;
         var entryTypes = {};
         jQuery.extend(true, bib2html, this.options.bib2html);
+		
+		var counter = {};
+		for (var key in bib2html.labelsshort) {
+			counter[key] = 0;
+		}
+		for (var index = 0; index < len; index++) {
+            var item = bibtex.data[index];
+			counter[item.entryType]++;
+		}
+		
+		var previousyear = 0;
+		
         for (var index = 0; index < len; index++) {
             var item = bibtex.data[index];
             if (!item.year) {
               item.year = this.options.defaultYear || "To Appear";
             }
             var html = bib2html.entry2html(item, this);
-            bibentries.push([item.year, bib2html.labels[item.entryType], html]);
+			var typehtml = bib2html.type2html(item, counter[item.entryType]--);
+            var year = (previousyear == item.year)?"":item.year;
+			bibentries.push([year, typehtml, html]);
             entryTypes[bib2html.labels[item.entryType]] = item.entryType;
             this.updateStats(item);
+			previousyear = item.year;
         }
         jQuery.fn.dataTableExt.oSort['type-sort-asc'] = function(x, y) {
             var item1 = bib2html.importance[entryTypes[x]],
@@ -258,10 +307,14 @@ var bibtexify = (function($) {
         };
         var table = this.$pubTable.dataTable({ 'aaData': bibentries,
                               'aaSorting': this.options.sorting,
-                              'aoColumns': [ { "sTitle": "Year" },
-                                             { "sTitle": "Type", "sType": "type-sort", "asSorting": [ "desc", "asc" ] },
+                              'aoColumns': [ { "sTitle": "Year", "bSortable": false },
+                                             { "sTitle": "Type", "bSortable": false },
                                              { "sTitle": "Publication", "bSortable": false }],
-                              'bPaginate': false
+                              'bPaginate': false,
+							  'bInfo':false,
+							  'bFilter':false,
+							  "bJQueryUI": true,
+							  "sDom": 'lfrtip'
                             });
         if (this.options.visualization) {
             this.addBarChart();
@@ -376,8 +429,8 @@ var bibtexify = (function($) {
     //   - bib2html: Can be used to override any of the functions or properties of
     //               the bib2html object. See above, starting around line 40.
     return function(bibsrc, bibElemId, opts) {
-        var options = $.extend({}, {'visualization': true,
-                                'sorting': [[0, "desc"], [1, "desc"]]},
+        var options = $.extend({}, {'visualization': false,
+                                'sorting': []},
                                 opts);
         var $pubTable = $("#" + bibElemId).addClass("bibtable");
         if ($("#shutter").size() === 0) {
