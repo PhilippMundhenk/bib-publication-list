@@ -6,7 +6,7 @@ Add BibTeX to your page: (bibtex: library.bib)<br/>
 requires library.bib in content folder
 
 ##Installation
-copy to files from this repository to their respective folders
+copy the files from this repository to their respective folders in your Kirby installation
 
 ##Demo
 Publications on [www.mundhenk.org](http://www.mundhenk.org/publications)
