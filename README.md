@@ -12,4 +12,4 @@ copy the files from this repository to their respective folders in your Kirby in
 Publications on [www.mundhenk.org](http://www.mundhenk.org/publications)
 
 ##Full Documentation
-Full Documentation to come...
+Please find the documentation here: [www.mundhenk.org](http://www.mundhenk.org/blog/kirby-bibtex)
