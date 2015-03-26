@@ -17,7 +17,7 @@ kirbytext::$tags['bibtex'] = array(
    	$html .= '});';
    	//$html .= '$(window).resize(function() {';
     //$html .= 'location.reload();';
-   	$html .= '});';
+   	//$html .= '});';
 	$html .= '</script>';
 	
     return $html;

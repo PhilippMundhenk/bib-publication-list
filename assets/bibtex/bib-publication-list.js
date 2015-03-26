@@ -157,7 +157,7 @@ var bibtexify = (function($) {
         },
         mastersthesis: function(entryData) {
             return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-            \"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " + entryData.type + ". " +
+            "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " + entryData.type + ". " +
             entryData.organization + ", " + entryData.school + ".";
         },
         techreport: function(entryData) {
