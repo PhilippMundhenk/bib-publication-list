@@ -1,4 +1,4 @@
-**based on [bib-publication-list](https://github.com/vkaravir/bib-publication-list)**
+**based on [bib-publication-list](https://github.com/vkaravir/bib-publication-list) and [lukasiewycz.github.io](https://github.com/lukasiewycz/lukasiewycz.github.io)** 
 
 #Kirby BibTeX
 ##Quick Reference
