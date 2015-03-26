@@ -15,8 +15,8 @@ kirbytext::$tags['bibtex'] = array(
    	$html .= '$(document).ready(function() {';
     $html .= 'bibtexify(\'content/'.$tag->attr('bibtex').'\', \'pubTable\');';
    	$html .= '});';
-   	$html .= '$(window).resize(function() {';
-    $html .= 'location.reload();';
+   	//$html .= '$(window).resize(function() {';
+    //$html .= 'location.reload();';
    	$html .= '});';
 	$html .= '</script>';
 	
