@@ -151,7 +151,7 @@ var bibtexify = (function($) {
         },
         misc: function(entryData) {
             return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-                entryData.title + ". " +
+                "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " +
                 ((entryData.howpublished)?entryData.howpublished + ". ":"") +
                 ((entryData.note)?entryData.note + ".":"");
         },
