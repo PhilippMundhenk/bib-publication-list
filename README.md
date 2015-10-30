@@ -1,4 +1,5 @@
-[![GitHub release](https://img.shields.io/github/release/PhilippMundhenk/Kirby-BibTeX.svg)](https://github.com/PhilippMundhenk/Kirby-BibTeX/releases) [![GitHub issues](https://img.shields.io/github/issues/PhilippMundhenk/Kirby-BibTeX.svg)](https://github.com/PhilippMundhenk/Kirby-BibTeX) [![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/PhilippMundhenk/Kirby-BibTeX/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/PhilippMundhenk/Kirby-BibTeX.svg)](https://github.com/PhilippMundhenk/Kirby-BibTeX/releases) [![GitHub issues](https://img.shields.io/github/issues/PhilippMundhenk/Kirby-BibTeX.svg)](https://github.com/PhilippMundhenk/Kirby-BibTeX/issues) [![GitHub license](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/PhilippMundhenk/Kirby-BibTeX/blob/master/LICENSE)
+
 **based on [bib-publication-list](https://github.com/vkaravir/bib-publication-list) and [lukasiewycz.github.io](https://github.com/lukasiewycz/lukasiewycz.github.io)** 
 
 #Kirby BibTeX
