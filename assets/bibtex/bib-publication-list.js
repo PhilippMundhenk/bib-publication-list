@@ -90,23 +90,23 @@ var bibtexify = (function($) {
         // adds the bibtex link and the opening div with bibtex content
         bibtex: function(entryData) {
             var itemStr = '';
-            itemStr += ' <a title="This article as BibTeX" href="#" class="biblink">' +
-                        '<img src=\"assets/bibtex/lib/images/bibtex.png\" /></a><div class="bibinfo hidden">';
-            itemStr += '<a href="#" class="bibclose" title="Close">x</a><pre>';
-            itemStr += '@' + entryData.entryType + "{" + entryData.cite + ",\n";
+            var output = '';
+            output += '\@' + entryData.entryType + '\{' + entryData.cite + ",<br>";
             $.each(entryData, function(key, value) {
                 if (key == 'author') {
-                    itemStr += '  author = { ';
+                    output += '  author = { ';
                     for (var index = 0; index < value.length; index++) {
-                        if (index > 0) { itemStr += " and "; }
-                        itemStr += value[index].last;
+                        if (index > 0) { output += ' and '; }
+                        output += value[index].last;
                     }
-                    itemStr += ' },\n';
+                    output += ' },<br>';
                 } else if (key != 'entryType' && key != 'cite') {
-                    itemStr += '  ' + key + " = { " + value + " },\n";
+                    output += '  ' + key + ' = { ' + value + ' },<br>';
                 }
             });
-            itemStr += "}</pre></div>";
+            output += '\}';
+            itemStr += ' <a title="This article as BibTeX" href="#" onclick="((window.open()).document).write(\''+output+'\');return false;">' +
+                        '<img src=\"assets/bibtex/lib/images/bibtex.png\" /></a>';
             return itemStr;
         },
         // generates the twitter link for the entry
@@ -243,20 +243,6 @@ var bibtexify = (function($) {
     // conference is the same as inproceedings
     bib2html.conference = bib2html.inproceedings;
 
-    // event handlers for the bibtex links
-    var EventHandlers = {
-        showbib: function showbib(event) {
-            $(this).next(".bibinfo").removeClass('hidden').addClass("open");
-            $("#shutter").show();
-            event.preventDefault();
-        },
-        hidebib: function hidebib(event) {
-            $("#shutter").hide();
-            $(".bibinfo.open").removeClass("open").addClass("hidden");
-            event.preventDefault();
-        }
-    };
-
     var Bib2HTML = function(data, $pubTable, options) {
         this.options = options;
         this.$pubTable = $pubTable;
@@ -335,9 +321,6 @@ var bibtexify = (function($) {
                           [0, $thElems.eq(0).hasClass("sorting_asc")?"asc":"desc"]]);
           }
         });
-        // attach the event handlers to the bib items
-        $(".biblink", this.$pubTable).live('click', EventHandlers.showbib);
-        $(".bibclose", this.$pubTable).live('click', EventHandlers.hidebib);
     };
     // updates the stats, called whenever a new bibtex entry is parsed
     bibproto.updateStats = function updateStats(item) {
@@ -434,10 +417,6 @@ var bibtexify = (function($) {
                                 'sorting': []},
                                 opts);
         var $pubTable = $("#" + bibElemId).addClass("bibtable");
-        if ($("#shutter").size() === 0) {
-            $pubTable.before('<div id="shutter" class="hidden"></div>');
-            $("#shutter").click(EventHandlers.hidebib);
-        }
         if (options.visualization) {
             $pubTable.before('<div id="' + bibElemId + 'pubchart" class="bibchart"></div>');
         }
