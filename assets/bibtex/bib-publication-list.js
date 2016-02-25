@@ -136,7 +136,7 @@ var bibtexify = (function($) {
         inproceedings: function(entryData) {
             return this.authors2html(entryData.author) + ". " +
                 "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". In: <em>" + entryData.booktitle + ".<\/em>" +
-				" " + entryData.location + 
+				" " + entryData.location +
 				((entryData.pages)? ", pp. " + entryData.pages :"") + "." +
 				((entryData.doi)? " DOI: <a href=\"http://dx.doi.org/"+entryData.doi+"\" target=\"_blank\">"+entryData.doi+"</a>":"") +
 				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
@@ -257,7 +257,7 @@ var bibtexify = (function($) {
         var bibentries = [], len = bibtex.data.length;
         var entryTypes = {};
         jQuery.extend(true, bib2html, this.options.bib2html);
-		
+
 		var counter = {};
 		for (var key in bib2html.labelsshort) {
 			counter[key] = 0;
@@ -266,9 +266,9 @@ var bibtexify = (function($) {
             var item = bibtex.data[index];
 			counter[item.entryType]++;
 		}
-		
+
 		var previousyear = 0;
-		
+
         for (var index = 0; index < len; index++) {
             var item = bibtex.data[index];
             if (!item.year) {
@@ -403,12 +403,12 @@ var bibtexify = (function($) {
     //     as the bibtex data
     //   - a URL, which is loaded and used as data. Note, that same-origin
     //     policy restricts where you can load the data.
-    // Supported options: 
+    // Supported options:
     //   - visualization: A boolean to control addition of the visualization.
     //                    Defaults to true.
     //   - tweet: Twitter username to add Tweet links to bib items with a url field.
-    //   - sorting: Control the default sorting of the list. Defaults to [[0, "desc"], 
-    //              [1, "desc"]]. See http://datatables.net/api fnSort for details 
+    //   - sorting: Control the default sorting of the list. Defaults to [[0, "desc"],
+    //              [1, "desc"]]. See http://datatables.net/api fnSort for details
     //              on formatting.
     //   - bib2html: Can be used to override any of the functions or properties of
     //               the bib2html object. See above, starting around line 40.
@@ -420,15 +420,43 @@ var bibtexify = (function($) {
         if (options.visualization) {
             $pubTable.before('<div id="' + bibElemId + 'pubchart" class="bibchart"></div>');
         }
-        var $bibSrc = $(bibsrc);
-        if ($bibSrc.length) { // we found an element, use its HTML as bibtex
-            new Bib2HTML($bibSrc.html(), $pubTable, options);
-            $bibSrc.hide();
-        } else { // otherwise we assume it is a URL
-            var callbackHandler = function(data) {
-                new Bib2HTML(data, $pubTable, options);
-            };
-            $.get(bibsrc, callbackHandler, "text");
+        // var $bibSrc = $(bibsrc);
+        // if ($bibSrc.length) { // we found an element, use its HTML as bibtex
+        //     new Bib2HTML($bibSrc.html(), $pubTable, options);
+        //     $bibSrc.hide();
+        // } else { // otherwise we assume it is a URL
+        //     var callbackHandler = function(data) {
+        //         new Bib2HTML(data, $pubTable, options);
+        //     };
+        //     $.get(bibsrc, callbackHandler, "text");
+        // }
+        if (typeof jQuery != 'undefined') {
+
+            if (jQuery.fn.jquery != "1.6.4")
+            {
+                // New code (tested with jQuery 2.1.4) gets Bibtex-Data via jQuery Ajax request and parses the data to Bib2HTML function
+                $.get( bibsrc, function( data ) {
+                    new Bib2HTML(data, $pubTable, options);
+                })
+                  .fail(function() {
+                    document.getElementById(bibElemId).innerHTML = "File: '" + bibsrc + "' not found.";
+                  });
+            }
+            else
+            {
+                // Deprecated code (needs jQuery 1.6.4)
+                var $bibSrc = $(bibsrc);
+                if ($bibSrc.length) { // we found an element, use its HTML as bibtex
+                    new Bib2HTML($bibSrc.html(), $pubTable, options);
+                    $bibSrc.hide();
+                } else { // otherwise we assume it is a URL
+                    var callbackHandler = function(data) {
+                        new Bib2HTML(data, $pubTable, options);
+                    };
+
+                    $.get(bibsrc, callbackHandler, "text");
+                }
+            }
         }
     };
 })(jQuery);
