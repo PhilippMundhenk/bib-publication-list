@@ -9,7 +9,8 @@ kirbytext::$tags['bibtex'] = array(
     $html .= '<table id=pubTable class=display>';
     $html .= '</table>';
     $html .= '</div>';
-    $html .= '<script type=text/javascript src=https://code.jquery.com/jquery-1.6.4.min.js></script>';
+    $html .= '<script type=text/javascript src=https://code.jquery.com/jquery-2.1.4.min.js></script>';
+    // $html .= '<script type=text/javascript src=https://code.jquery.com/jquery-1.6.4.min.js></script>';
     $html .= '<script type=text/javascript src=https://cdn.datatables.net/1.6.2/js/jquery.dataTables.min.js></script>';
     $html .= '<script type=text/javascript src=assets/bibtex/BibTex-0.1.2.js></script>';
     $html .= '<script type=text/javascript src=assets/bibtex/bib-publication-list.js></script>';
@@ -21,14 +22,14 @@ kirbytext::$tags['bibtex'] = array(
     }
     else
     {
-      $lib = url($path = '/'.$tag->attr('bibtex'));  
+      $lib = url($path = '/'.$tag->attr('bibtex'));
     }
     $html .= 'bibtexify(\''.$lib.'\', \'pubTable\');';
     $html .= '});';
     $html .= '</script>';
 
     $html .= '</div>';
-	
+
     return $html;
 
   }
