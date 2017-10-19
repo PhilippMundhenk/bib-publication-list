@@ -134,7 +134,7 @@ var bibtexify = (function($) {
         },
         // helper functions for formatting different types of bibtex entries
         inproceedings: function(entryData) {
-            return this.authors2html(entryData.author) + ". " +
+            return this.authors2html(entryData.author) + ": " +
                 "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". In: <em>" + entryData.booktitle + ".<\/em>" +
 				" " + entryData.location +
 				((entryData.pages)? ", pp. " + entryData.pages :"") + "." +
@@ -142,7 +142,7 @@ var bibtexify = (function($) {
 				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
         },
         article: function(entryData) {
-            return this.authors2html(entryData.author) + ". " +
+            return this.authors2html(entryData.author) + ": " +
                 "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". <em> In: " + entryData.journal + ", " + entryData.volume +
                 ((entryData.number)?"(" + entryData.number + ")":"")+ ", " +
                 "pp. " + entryData.pages + ". " +
@@ -150,29 +150,28 @@ var bibtexify = (function($) {
 				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
         },
         misc: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-                "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " +
+            return this.authors2html(entryData.author) + ": " +
+                "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " + entryData.year + ". " +
                 ((entryData.howpublished)?entryData.howpublished + ". ":"") +
                 ((entryData.note)?entryData.note + ".":"");
         },
         mastersthesis: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
-            "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " + entryData.type + ". " +
-            entryData.organization + ", " + entryData.school + ".";
+            return this.authors2html(entryData.author) + ": \"<span class=\"entrytitle\" >" + entryData.title + "</span>\"" + ". " 
+            + entryData.type + ", " + entryData.school + " (" + entryData.year + "). " + entryData.publisher + ", ISBN " + entryData.isbn + ".";
         },
         techreport: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
+            return this.authors2html(entryData.author) + " (" + entryData.year + "): " +
                 entryData.title + ". " + entryData.institution + ". " +
                 entryData.number + ". " + entryData.type + ".";
         },
         book: function(entryData) {
-            return this.authors2html(entryData.author) + ". " +
+            return this.authors2html(entryData.author) + ": " +
                 " <em class=\"entrytitle\">" + entryData.title + "<\/em>, " +
                 entryData.address +": "+ entryData.publisher + ". " +
                 ((entryData.isbn)?", ISBN: " + entryData.isbn + ".":".");
         },
         inbook: function(entryData) {
-            return this.authors2html(entryData.author) + " (" + entryData.year + "). " +
+            return this.authors2html(entryData.author) + " (" + entryData.year + "): " +
                 entryData.chapter + " in <em>" + entryData.title + "<\/em>, " +
                 ((entryData.editor)?" Edited by " + entryData.editor + ", ":"") +
                 entryData.publisher + ", pp. " + entryData.pages + "" +
@@ -182,7 +181,7 @@ var bibtexify = (function($) {
                 ".";
         },
         incollection: function(entryData) {
-            return this.authors2html(entryData.author) + ". " +
+            return this.authors2html(entryData.author) + ": " +
                 "\"<span class=\"entrytitle\" >" + entryData.title + "</span>\""+ ". In: <em>" + entryData.booktitle + "<\/em>. " +
                 ((entryData.editor)?" Ed. by " + entryData.editor + ". ":"") +
                 entryData.publisher + ", pp. " + entryData.pages + "" +
