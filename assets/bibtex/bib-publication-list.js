@@ -147,7 +147,8 @@ var bibtexify = (function($) {
                 ((entryData.number)?"(" + entryData.number + ")":"")+ ", " +
                 "pp. " + entryData.pages + ". " +
                 ((entryData.doi)? " DOI: <a href=\"http://dx.doi.org/"+entryData.doi+"\" target=\"_blank\">"+entryData.doi+"</a>":"") +
-				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"");
+				((!entryData.doi && entryData.isbn)?" ISBN: " + entryData.isbn + "":"") +
+                ((entryData.note)?entryData.note + ".":"");
         },
         misc: function(entryData) {
             return this.authors2html(entryData.author) + ": " +
